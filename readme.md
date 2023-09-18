@@ -31,3 +31,9 @@ yarn dev
 ```bash
 yarn start
 ```
+
+## migrate db
+
+```bash
+npx prisma migrate dev
+```
