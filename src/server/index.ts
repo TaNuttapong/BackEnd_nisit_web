@@ -4,33 +4,21 @@ import helmet from "@fastify/helmet";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import routes from "../routes";
+import swaggerConfig from "../config/swagger";
 
 function server() {
   const app = fastify({ logger: true });
 
   app.register(cors, {
     origin: true,
-    methods: ["GET", "PUT", "PATCH", "POST", "DELETE"],
+    methods: ["GET", "PUT", "POST", "DELETE"],
   });
   app.register(helmet);
-  routes(app, "/apis");
-  app.register(swagger, {
-    openapi: {
-      info: {
-        title: "Fastify REST API",
-        description: "API documentation",
-        version: "0.1.0",
-      },
-      servers: [
-        {
-          url: "http://localhost:8000",
-          description: "Development server",
-        },
-      ],
-    },
-  });
-  app.register(swaggerUi, {
-    prefix: "/documentation",
+  app.register(swagger, swaggerConfig.swaggerOptions);
+  app.register(swaggerUi, swaggerConfig.swaggerUiOptions);
+  app.register((app, options, done) => {
+    routes(app, "/apis");
+    done();
   });
 
   return app;

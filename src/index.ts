@@ -4,7 +4,7 @@ import server from "./server";
 async function startServer() {
   const app = server();
   const host = config.HOST;
-  const port = parseInt(config.PORT || "8000");
+  const port = parseInt(config.PORT ?? "8000");
   const swaggerUrl = config.SWAGGER_URL;
 
   try {
