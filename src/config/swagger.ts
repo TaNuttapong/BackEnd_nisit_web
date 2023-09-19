@@ -12,12 +12,17 @@ const swaggerOptions = {
       },
     ],
     tags: [{ name: "Account", description: "Account" }],
+    consumes: ["application/json"],
+    produces: ["application/json"],
   },
 };
 
 const swaggerUiOptions = {
   routePrefix: "/documentation",
   exposeRoute: true,
+  uiConfig: {
+    filter: true,
+  },
 };
 
 const swaggerConfig = {
