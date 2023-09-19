@@ -1,4 +1,4 @@
-export default interface AccountReqest {
+export default interface AccountRequest {
   email: string;
   password: string;
 }
