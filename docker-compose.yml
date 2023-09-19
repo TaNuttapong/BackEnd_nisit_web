@@ -4,7 +4,9 @@ services:
     image: mysql:latest
     container_name: db_nisit_web
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: nisit_web
+      MYSQL_ROOT_PASSWORD: "${DB_PASSSWORD}"
+      MYSQL_DATABASE: "${DB_NAME}"
+    env_file:
+      - .env
     ports:
-      - "3306:3306"
+      - "${DB_PORT}:${DB_PORT}"
