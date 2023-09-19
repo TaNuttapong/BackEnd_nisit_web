@@ -1,13 +1,14 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import * as bcrypt from "bcrypt";
-import accountServices from "../services/AccountServices";
-import AccountRequest from "../models/Request/AccountRequestModel";
+import accountServices from "../services/AccountService";
+import { AccountRequest } from "../models/Request/AccountRequestModel";
 import createResponseMessage from "../messages/response";
 import { StatusCodeModel } from "../constants/StatusConstants";
 import {
   AccountDescription,
   AccountService,
 } from "../constants/AccountConstants";
+import { RoleEnum } from "../enums/role.enum";
 
 async function createAccount(request: FastifyRequest, reply: FastifyReply) {
   try {

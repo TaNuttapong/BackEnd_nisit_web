@@ -1,4 +1,4 @@
-import AccountRequest from "../models/Request/AccountRequestModel";
+import { AccountRequest } from "../models/Request/AccountRequestModel";
 import prisma from "../prisma";
 
 async function createAccount(payload: AccountRequest) {
