@@ -8,12 +8,10 @@ import {
   AccountDescription,
   AccountService,
 } from "../constants/AccountConstants";
-import { RoleEnum } from "../enums/role.enum";
 
 async function createAccount(request: FastifyRequest, reply: FastifyReply) {
   try {
     const { email, password } = request.body as AccountRequest;
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const account = await accountServices.createAccount({
@@ -21,31 +19,45 @@ async function createAccount(request: FastifyRequest, reply: FastifyReply) {
       password: hashedPassword,
     });
 
-    if (account) {
+    if (!account) {
       const response = createResponseMessage({
         code: StatusCodeModel.SUCCESS.code,
         message: StatusCodeModel.SUCCESS.message,
         service: AccountService.CREATE_ACCOUNT,
-        description: AccountDescription.CREATE_ACCOUNT,
+        description: AccountDescription.CREATE_ACCOUNT_FAILED,
         data: account,
       });
-      reply.status(201).send(response);
-    } else {
+
+      reply.status(403).send(response);
+    }
+    const findAccount = await accountServices.getAccountByEmail(email);
+
+    if (!findAccount) {
       const response = createResponseMessage({
         code: StatusCodeModel.FAILED.code,
         message: StatusCodeModel.FAILED.message,
         service: AccountService.CREATE_ACCOUNT,
-        description: AccountDescription.CREATE_ACCOUNT,
-        err: account,
+        description: AccountDescription.FIND_EMAIL_ACCOUNT_FAILED,
+        err: findAccount,
       });
       reply.status(403).send(response);
     }
+
+    const response = createResponseMessage({
+      code: StatusCodeModel.SUCCESS.code,
+      message: StatusCodeModel.SUCCESS.message,
+      service: AccountService.CREATE_ACCOUNT,
+      description: AccountDescription.CREATE_ACCOUNT_SUCCESS,
+      data: account,
+    });
+
+    reply.status(201).send(response);
   } catch (err: any) {
     const response = createResponseMessage({
       code: StatusCodeModel.FAILED.code,
       message: StatusCodeModel.FAILED.message,
       service: AccountService.CREATE_ACCOUNT,
-      description: AccountDescription.CREATE_ACCOUNT,
+      description: AccountDescription.CREATE_ACCOUNT_FAILED,
       err: err.message,
     });
     reply.status(500).send(response);
