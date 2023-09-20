@@ -11,7 +11,11 @@ const swaggerOptions = {
         description: "Development server",
       },
     ],
-    tags: [{ name: "Account", description: "Account" }],
+    tags: [
+      { name: "Auth", description: "Auth" },
+      { name: "Account", description: "Account" },
+    ],
+
     consumes: ["application/json"],
     produces: ["application/json"],
   },

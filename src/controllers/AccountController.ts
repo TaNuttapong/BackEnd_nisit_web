@@ -9,14 +9,41 @@ import {
   AccountService,
 } from "../constants/AccountConstants";
 
+async function listAccount(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const account = await accountServices.listAccount();
+
+    const response = createResponseMessage({
+      code: StatusCodeModel.SUCCESS.code,
+      message: StatusCodeModel.SUCCESS.message,
+      service: AccountService.LIST_ACCOUNT,
+      description: AccountDescription.LIST_ACCOUNT_SUCCESS,
+      data: account,
+    });
+
+    reply.status(200).send(response);
+  } catch (err: any) {
+    const response = createResponseMessage({
+      code: StatusCodeModel.FAILED.code,
+      message: StatusCodeModel.FAILED.message,
+      service: AccountService.LIST_ACCOUNT,
+      description: AccountDescription.LIST_ACCOUNT_FAILED,
+      err: err.message,
+    });
+    reply.status(500).send(response);
+  }
+}
+
 async function createAccount(request: FastifyRequest, reply: FastifyReply) {
   try {
-    const { email, password } = request.body as AccountRequest;
+    const { email, password, name, branch } = request.body as AccountRequest;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const account = await accountServices.createAccount({
       email,
       password: hashedPassword,
+      name,
+      branch,
     });
 
     if (!account) {
@@ -25,7 +52,7 @@ async function createAccount(request: FastifyRequest, reply: FastifyReply) {
         message: StatusCodeModel.SUCCESS.message,
         service: AccountService.CREATE_ACCOUNT,
         description: AccountDescription.CREATE_ACCOUNT_FAILED,
-        data: account,
+        err: account,
       });
 
       reply.status(403).send(response);
@@ -65,6 +92,7 @@ async function createAccount(request: FastifyRequest, reply: FastifyReply) {
 }
 
 const accountController = {
+  listAccount,
   createAccount,
 };
 

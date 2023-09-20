@@ -16,28 +16,34 @@ enum Role {
 }
 
 model Account {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique @db.VarChar(50)
-  password  String   @db.VarChar(255)
-  role      Role     @default(ADMIN)
-  createdAt DateTime @default(now()) @db.Timestamp(6)
-  updatedAt DateTime @updatedAt @db.Timestamp(6)
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(200)
+  email     String    @unique @db.VarChar(50)
+  password  String    @db.VarChar(255)
+  branch    String    @db.VarChar(200)
+  role      Role      @default(ADMIN)
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime  @updatedAt @db.Timestamp(6)
+  Project   Project[]
 }
 
 model Project {
-  project_id    Int             @id @default(autoincrement())
+  id            Int             @id @default(autoincrement())
   project_name  String          @db.VarChar(50)
   description   String          @db.Text
   image         String          @db.VarChar(255)
   start_date    DateTime
   end_date      DateTime
+  link          String          @db.VarChar(255)
+  account_id    Int
+  account       Account         @relation(fields: [account_id], references: [id])
   createdAt     DateTime        @default(now()) @db.Timestamp(6)
   updatedAt     DateTime        @updatedAt @db.Timestamp(6)
   Nisit_Project Nisit_Project[]
 }
 
 model Nisit {
-  student_id    Int             @id @default(autoincrement())
+  id            Int             @id @default(autoincrement())
   name          String          @db.VarChar(50)
   class         String          @db.VarChar(255)
   createdAt     DateTime        @default(now()) @db.Timestamp(6)
@@ -49,8 +55,8 @@ model Nisit_Project {
   student_id  Int
   project_id  Int
   certificate String   @db.VarChar(255)
-  nisit       Nisit    @relation(fields: [student_id], references: [student_id])
-  project     Project  @relation(fields: [project_id], references: [project_id])
+  nisit       Nisit    @relation(fields: [student_id], references: [id])
+  project     Project  @relation(fields: [project_id], references: [id])
   createdAt   DateTime @default(now()) @db.Timestamp(6)
   updatedAt   DateTime @updatedAt @db.Timestamp(6)
 

@@ -7,14 +7,18 @@ const createAccountSchema = {
     properties: {
       email: { type: "string" },
       password: { type: "string" },
+      name: { type: "string" },
+      branch: { type: "string" },
     },
     examples: [
       {
         email: "example@email.com",
         password: "password123",
+        name: "Tar",
+        branch: "ComSCI",
       },
     ],
-    required: ["email", "password"],
+    required: ["email", "password", "name", "branch"],
   },
   response: {
     201: {
@@ -33,7 +37,9 @@ const createAccountSchema = {
           type: "object",
           properties: {
             id: { type: "number" },
+            name: { type: "string" },
             email: { type: "string" },
+            branch: { type: "string" },
             role: { type: "string" },
             createdAt: { type: "string", format: "date-time" },
             updatedAt: { type: "string", format: "date-time" },
