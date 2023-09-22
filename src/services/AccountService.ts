@@ -1,4 +1,7 @@
-import { AccountRequest, AccountUpdateRequest } from "../models/Request/AccountRequestModel";
+import {
+  AccountRequest,
+  AccountUpdateRequest,
+} from "../models/Request/AccountRequestModel";
 import prisma from "../prisma";
 
 async function listAccount() {
@@ -45,11 +48,18 @@ async function updateAccount(id: number, payload: AccountUpdateRequest) {
   });
 }
 
+async function deleteAccount(id: number) {
+  return await prisma.account.delete({
+    where: { id: id },
+  });
+}
+
 const accountServices = {
   listAccount,
   createAccount,
   getAccountByEmail,
   updateAccount,
+  deleteAccount,
 };
 
 export default accountServices;

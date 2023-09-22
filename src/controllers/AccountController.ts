@@ -98,7 +98,6 @@ async function updateAccount(request: FastifyRequest, reply: FastifyReply) {
   try {
     const params = request.params as { id?: string };
     const id = params?.id as string;
-    console.log(id);
 
     const accountId: number = parseInt(id, 10);
 
@@ -132,10 +131,41 @@ async function updateAccount(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
+async function deleteAccount(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const params = request.params as { id?: string };
+    const id = params?.id as string;
+
+    const accountId: number = parseInt(id, 10);
+
+    await accountServices.deleteAccount(accountId);
+
+    const response = createResponseMessage({
+      code: StatusCodeModel.SUCCESS.code,
+      message: StatusCodeModel.SUCCESS.message,
+      service: AccountService.DELETE_ACCOUNT,
+      description: AccountDescription.DELETE_ACCOUNT_SUCCESS,
+      data: true,
+    });
+
+    reply.status(200).send(response);
+  } catch (err: any) {
+    const response = createResponseMessage({
+      code: StatusCodeModel.FAILED.code,
+      message: StatusCodeModel.FAILED.message,
+      service: AccountService.DELETE_ACCOUNT,
+      description: AccountDescription.DELETE_ACCOUNT_FAILED,
+      err: err.message,
+    });
+    reply.status(500).send(response);
+  }
+}
+
 const accountController = {
   listAccount,
   createAccount,
   updateAccount,
+  deleteAccount,
 };
 
 export default accountController;
