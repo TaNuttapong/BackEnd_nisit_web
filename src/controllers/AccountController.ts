@@ -1,7 +1,10 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import * as bcrypt from "bcrypt";
 import accountServices from "../services/AccountService";
-import { AccountRequest } from "../models/Request/AccountRequestModel";
+import {
+  AccountRequest,
+  AccountUpdateRequest,
+} from "../models/Request/AccountRequestModel";
 import createResponseMessage from "../messages/response";
 import { StatusCodeModel } from "../constants/StatusConstants";
 import {
@@ -91,9 +94,48 @@ async function createAccount(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
+async function updateAccount(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const params = request.params as { id?: string };
+    const id = params?.id as string;
+    console.log(id);
+
+    const accountId: number = parseInt(id, 10);
+
+    const { email, name, branch, role } = request.body as AccountUpdateRequest;
+
+    const account = await accountServices.updateAccount(accountId, {
+      email,
+      name,
+      branch,
+      role,
+    });
+
+    const response = createResponseMessage({
+      code: StatusCodeModel.SUCCESS.code,
+      message: StatusCodeModel.SUCCESS.message,
+      service: AccountService.UPDATE_ACCOUNT,
+      description: AccountDescription.UPDATE_ACCOUNT_SUCCESS,
+      data: account.updatedAt,
+    });
+
+    reply.status(200).send(response);
+  } catch (err: any) {
+    const response = createResponseMessage({
+      code: StatusCodeModel.FAILED.code,
+      message: StatusCodeModel.FAILED.message,
+      service: AccountService.UPDATE_ACCOUNT,
+      description: AccountDescription.UPDATE_ACCOUNT_FAILED,
+      err: err.message,
+    });
+    reply.status(500).send(response);
+  }
+}
+
 const accountController = {
   listAccount,
   createAccount,
+  updateAccount,
 };
 
 export default accountController;

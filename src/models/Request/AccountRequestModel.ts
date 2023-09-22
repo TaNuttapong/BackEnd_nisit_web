@@ -7,3 +7,10 @@ export interface AccountRequest {
   name: string;
   branch: string;
 }
+
+export interface AccountUpdateRequest {
+  email: string;
+  role: RoleEnum;
+  name: string;
+  branch: string;
+}
