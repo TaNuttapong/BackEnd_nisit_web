@@ -51,8 +51,8 @@ async function createAccount(request: FastifyRequest, reply: FastifyReply) {
 
     if (!account) {
       const response = createResponseMessage({
-        code: StatusCodeModel.SUCCESS.code,
-        message: StatusCodeModel.SUCCESS.message,
+        code: StatusCodeModel.NOT_FOUND.code,
+        message: StatusCodeModel.NOT_FOUND.message,
         service: AccountService.CREATE_ACCOUNT,
         description: AccountDescription.CREATE_ACCOUNT_FAILED,
         err: account,

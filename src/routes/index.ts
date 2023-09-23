@@ -4,6 +4,8 @@ import createAccountSchema from "../schemas/account/AccountCreate";
 import listAccountSchema from "../schemas/account/AccountList";
 import updateAccountSchema from "../schemas/account/AccountUpdate";
 import deleteAccountSchema from "../schemas/account/AccountDelete";
+import authController from "../controllers/Auth/AuthController";
+import LoginSchema from "../schemas/auth/Login";
 
 async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.get(`${prefix}/account/list`, {
@@ -21,6 +23,10 @@ async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.delete(`${prefix}/account/delete/:id`, {
     schema: deleteAccountSchema,
     handler: accountController.deleteAccount,
+  });
+  fastify.post(`${prefix}/auth/login`, {
+    schema: LoginSchema,
+    handler: authController.login,
   });
 }
 
