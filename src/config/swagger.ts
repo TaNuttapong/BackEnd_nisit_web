@@ -15,10 +15,20 @@ const swaggerOptions = {
       { name: "Auth", description: "Auth" },
       { name: "Account", description: "Account" },
     ],
-
     consumes: ["application/json"],
     produces: ["application/json"],
   },
+  // components: {
+  //   securitySchemas: {
+  //     bearerAuth: {
+  //       type: "http",
+  //       schema: "bearer",
+  //       in: "header",
+  //       bearerFormat: "JWT",
+  //     },
+  //   },
+  // },
+  // security: [{ bearerAuth: ["bearerAuth"] }],
 };
 
 const swaggerUiOptions = {

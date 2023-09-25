@@ -8,7 +8,7 @@ import * as bcrypt from "bcrypt";
 import { AuthConstants, AuthDescription } from "../../constants/AuthConstants";
 import { sign } from "jsonwebtoken";
 import config from "../../config/config";
-import LoginResponse from "../../models/Response/LoginResponsemodel";
+import LoginResponse from "../../models/Response/LoginResponseModel";
 
 async function login(request: FastifyRequest, reply: FastifyReply) {
   try {
@@ -84,8 +84,47 @@ async function login(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
+async function logout(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const tokenString = request.headers.authorization as string;
+    const token = tokenString.split(" ")[1];
+
+    const verify = await AuthServices.logout(token);
+    if (verify) {
+      const response = createResponseMessage({
+        code: StatusCodeModel.SUCCESS.code,
+        message: StatusCodeModel.SUCCESS.message,
+        service: AuthConstants.LOGOUT_ACCOUNT,
+        description: AuthDescription.LOGOUT_FAIL,
+        data: verify,
+      });
+
+      reply.status(200).send(response);
+    } else {
+      const response = createResponseMessage({
+        code: StatusCodeModel.FAILED.code,
+        message: StatusCodeModel.FAILED.message,
+        service: AuthConstants.LOGOUT_ACCOUNT,
+        description: AuthDescription.UNAUTHORIZED,
+        err: verify,
+      });
+      reply.status(401).send(response);
+    }
+  } catch (err: any) {
+    const response = createResponseMessage({
+      code: StatusCodeModel.FAILED.code,
+      message: StatusCodeModel.FAILED.message,
+      service: AuthConstants.LOGIN_ACCOUNT,
+      description: AuthDescription.LOGIN_FAIL,
+      err: err.message,
+    });
+    reply.status(500).send(response);
+  }
+}
+
 const authController = {
   login,
+  logout,
 };
 
 export default authController;

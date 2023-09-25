@@ -6,6 +6,7 @@ import updateAccountSchema from "../schemas/account/AccountUpdate";
 import deleteAccountSchema from "../schemas/account/AccountDelete";
 import authController from "../controllers/Auth/AuthController";
 import LoginSchema from "../schemas/auth/Login";
+import LogoutSchema from "../schemas/auth/Logout";
 
 async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.get(`${prefix}/account/list`, {
@@ -27,6 +28,10 @@ async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.post(`${prefix}/auth/login`, {
     schema: LoginSchema,
     handler: authController.login,
+  });
+  fastify.get(`${prefix}/auth/logout`, {
+    schema: LogoutSchema,
+    handler: authController.logout,
   });
 }
 
