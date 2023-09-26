@@ -2,11 +2,7 @@ const LogoutSchema = {
   tags: ["Auth"],
   summary: "logout account with token",
   description: "logout account with token.",
-  //   headers: {
-  //     security: {
-  //       bearerAuth: [],
-  //     },
-  //   },
+  security: [{ bearerAuth: [] }],
   response: {
     200: {
       description: "Logout successfully",

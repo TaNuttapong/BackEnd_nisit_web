@@ -17,18 +17,18 @@ const swaggerOptions = {
     ],
     consumes: ["application/json"],
     produces: ["application/json"],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          name: "bearerAuth",
+          in: "header",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
-  // components: {
-  //   securitySchemas: {
-  //     bearerAuth: {
-  //       type: "http",
-  //       schema: "bearer",
-  //       in: "header",
-  //       bearerFormat: "JWT",
-  //     },
-  //   },
-  // },
-  // security: [{ bearerAuth: ["bearerAuth"] }],
 };
 
 const swaggerUiOptions = {
@@ -36,6 +36,7 @@ const swaggerUiOptions = {
   exposeRoute: true,
   uiConfig: {
     filter: true,
+    persistAuthorization: true,
   },
 };
 
