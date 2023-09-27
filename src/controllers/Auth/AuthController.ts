@@ -42,10 +42,8 @@ async function login(request: FastifyRequest, reply: FastifyReply) {
           branch: searchAccount.branch,
           exp: expTimestamp,
         };
-        if (typeof config.SECRET_KEY !== "string") {
-          throw new Error("Invalid SECRET_KEY configuration");
-        }
-        const token = sign(payloadToken, config.SECRET_KEY, {
+
+        const token = sign(payloadToken, config.SECRET_KEY ?? "", {
           algorithm: "HS512",
         });
         const payload: LoginResponse = {
