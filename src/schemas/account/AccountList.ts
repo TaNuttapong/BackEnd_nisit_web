@@ -2,6 +2,7 @@ const listAccountSchema = {
   tags: ["Account"],
   summary: "list account",
   description: "list account.",
+  security: [{ bearerAuth: [] }],
   response: {
     200: {
       description: "Account list successfully",

@@ -2,6 +2,7 @@ const createAccountSchema = {
   tags: ["Account"],
   summary: "Create a new account",
   description: "Create a new user account.",
+  security: [{ bearerAuth: [] }],
   body: {
     type: "object",
     properties: {

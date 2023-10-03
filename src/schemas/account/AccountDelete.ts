@@ -2,6 +2,7 @@ const deleteAccountSchema = {
   tags: ["Account"],
   summary: "delete account with id",
   description: "delete user account with id .",
+  security: [{ bearerAuth: [] }],
   params: {
     type: "object",
     properties: {

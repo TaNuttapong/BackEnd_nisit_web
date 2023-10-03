@@ -2,6 +2,7 @@ const updateAccountSchema = {
   tags: ["Account"],
   summary: "update account with id",
   description: "update user account with id .",
+  security: [{ bearerAuth: [] }],
   params: {
     type: "object",
     properties: {
