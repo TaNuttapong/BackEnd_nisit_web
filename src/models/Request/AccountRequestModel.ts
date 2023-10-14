@@ -10,7 +10,6 @@ export interface AccountRequest {
 
 export interface AccountUpdateRequest {
   email: string;
-  role?: RoleEnum;
   name: string;
   branch: string;
 }

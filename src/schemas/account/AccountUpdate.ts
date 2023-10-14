@@ -16,19 +16,17 @@ const updateAccountSchema = {
     type: "object",
     properties: {
       email: { type: "string" },
-      role: { type: "string" },
       name: { type: "string" },
       branch: { type: "string" },
     },
     examples: [
       {
         email: "example@email.com",
-        role: "ADMIN",
         name: "Tar",
         branch: "ComSCI",
       },
     ],
-    required: ["email", "role", "name", "branch"],
+    required: ["email", "name", "branch"],
   },
   response: {
     200: {

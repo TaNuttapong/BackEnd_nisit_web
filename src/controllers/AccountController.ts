@@ -11,6 +11,7 @@ import {
   AccountDescription,
   AccountService,
 } from "../constants/AccountConstants";
+import { RoleEnum } from "../enums/role.enum";
 
 async function listAccount(request: FastifyRequest, reply: FastifyReply) {
   try {
@@ -46,6 +47,7 @@ async function createAccount(request: FastifyRequest, reply: FastifyReply) {
       email,
       password: hashedPassword,
       name,
+      role: RoleEnum.ADMIN,
       branch,
     });
 
@@ -101,13 +103,12 @@ async function updateAccount(request: FastifyRequest, reply: FastifyReply) {
 
     const accountId: number = parseInt(id, 10);
 
-    const { email, name, branch, role } = request.body as AccountUpdateRequest;
+    const { email, name, branch } = request.body as AccountUpdateRequest;
 
     const account = await accountServices.updateAccount(accountId, {
       email,
       name,
       branch,
-      role,
     });
 
     const response = createResponseMessage({
