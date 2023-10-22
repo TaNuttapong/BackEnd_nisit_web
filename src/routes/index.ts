@@ -8,6 +8,8 @@ import authController from "../controllers/Auth/AuthController";
 import LoginSchema from "../schemas/auth/Login";
 import LogoutSchema from "../schemas/auth/Logout";
 import jwtMiddleware from "../middleware/jwt.middleware";
+import addController from "../controllers/ProjectController";
+import addProjectSchema from "../schemas/project/ProjectAdd";
 
 async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.get(`${prefix}/account/list`, {
@@ -38,6 +40,11 @@ async function routes(fastify: FastifyInstance, prefix: string) {
     schema: LogoutSchema,
     preHandler: jwtMiddleware,
     handler: authController.logout,
+  });
+  fastify.post(`${prefix}/project/add`, {
+    schema: addProjectSchema,
+    preHandler: jwtMiddleware,
+    handler: addController.addProject,
   });
 }
 

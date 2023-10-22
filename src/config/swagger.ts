@@ -14,6 +14,7 @@ const swaggerOptions = {
     tags: [
       { name: "Auth", description: "Auth" },
       { name: "Account", description: "Account" },
+      { name: "Project", description: "Project" },
     ],
     consumes: ["application/json"],
     produces: ["application/json"],
