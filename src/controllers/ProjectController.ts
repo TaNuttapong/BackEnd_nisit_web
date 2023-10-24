@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { AddProjectRequest } from "../models/Request/AddRequestModel";
-import addServices from "../services/AddAdminService";
+import { AddProjectRequest } from "../models/Request/ProjectRequestModel";
+import addServices from "../services/ProjectService";
 import { StatusCodeModel } from "../constants/StatusConstants";
 import createResponseMessage from "../messages/response";
 import {
@@ -20,15 +20,14 @@ async function addProject(request: FastifyRequest, reply: FastifyReply) {
       account_id,
     } = request.body as AddProjectRequest;
 
-    // Convert start_date to ISO-8601 DateTime format if it's not in that format
     const isoStartDate = new Date(start_date).toISOString();
     const isoEndDate = new Date(end_date).toISOString();
-    
+
     const addProject = await addServices.addProject({
       project_name,
       description,
       image,
-      start_date: isoStartDate, // Use the converted date
+      start_date: isoStartDate,
       end_date: isoEndDate,
       link,
       account_id,
@@ -55,8 +54,8 @@ async function addProject(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
-const addController = {
+const ProjectControllers = {
   addProject,
 };
 
-export default addController;
+export default ProjectControllers;

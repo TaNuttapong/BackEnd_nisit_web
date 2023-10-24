@@ -10,6 +10,8 @@ import LogoutSchema from "../schemas/auth/Logout";
 import jwtMiddleware from "../middleware/jwt.middleware";
 import addController from "../controllers/ProjectController";
 import addProjectSchema from "../schemas/project/ProjectAdd";
+import NiSitControllers from "../controllers/NisitController";
+import ProjectControllers from "../controllers/ProjectController";
 
 async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.get(`${prefix}/account/list`, {
@@ -44,7 +46,12 @@ async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.post(`${prefix}/project/add`, {
     schema: addProjectSchema,
     preHandler: jwtMiddleware,
-    handler: addController.addProject,
+    handler: ProjectControllers.addProject,
+  });
+  fastify.post(`${prefix}/nisit/excel/add`, {
+    // schema: addProjectSchema,
+    preHandler: jwtMiddleware,
+    handler: NiSitControllers.addNiSitExcel,
   });
 }
 

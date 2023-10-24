@@ -7,10 +7,7 @@ export interface AddProjectRequest {
   link: string;
   account_id: number;
 }
-export interface AddNiSitRequest {
-  name: string;
-  class: string;
-}
+
 
 export interface AddNiSitProjectRequest {
   certificate: string;

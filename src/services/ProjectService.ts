@@ -1,4 +1,4 @@
-import { AddProjectRequest } from "../models/Request/AddRequestModel";
+import { AddProjectRequest } from "../models/Request/ProjectRequestModel";
 import prisma from "../prisma";
 
 async function addProject(payload: AddProjectRequest) {
@@ -7,8 +7,8 @@ async function addProject(payload: AddProjectRequest) {
   });
 }
 
-const addServices = {
+const ProjectServices = {
   addProject,
 };
 
-export default addServices;
+export default ProjectServices;

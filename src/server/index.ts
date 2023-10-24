@@ -1,5 +1,6 @@
 import fastify from "fastify";
 import cors from "@fastify/cors";
+import fastifyMultipart from "@fastify/multipart";
 import helmet from "@fastify/helmet";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
@@ -24,6 +25,7 @@ function server() {
     secret: config.SECRET_KEY,
     sign: { algorithm: "HS512", expiresIn: config.EXPIRE },
   });
+  app.register(fastifyMultipart);
   app.register(helmet);
   app.register(swagger, swaggerConfig.swaggerOptions);
   app.register(swaggerUi, swaggerConfig.swaggerUiOptions);
