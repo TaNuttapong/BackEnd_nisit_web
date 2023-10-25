@@ -1,6 +1,6 @@
 import fastify from "fastify";
 import cors from "@fastify/cors";
-import fastifyMultipart from "@fastify/multipart";
+import multipart from "@fastify/multipart";
 import helmet from "@fastify/helmet";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
@@ -17,6 +17,7 @@ function server() {
   if (typeof config.EXPIRE !== "string") {
     throw new Error("Invalid EXPIRE configuration");
   }
+  app.register(multipart);
   app.register(cors, {
     origin: true,
     methods: ["GET", "PUT", "POST", "DELETE"],
@@ -25,7 +26,6 @@ function server() {
     secret: config.SECRET_KEY,
     sign: { algorithm: "HS512", expiresIn: config.EXPIRE },
   });
-  app.register(fastifyMultipart);
   app.register(helmet);
   app.register(swagger, swaggerConfig.swaggerOptions);
   app.register(swaggerUi, swaggerConfig.swaggerUiOptions);
