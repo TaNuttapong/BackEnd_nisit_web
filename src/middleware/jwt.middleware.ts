@@ -23,7 +23,7 @@ const jwtMiddleware = async (
     });
     reply.status(401).send(response);
   } else {
-    const decoded = jwt.verify(token, config.SECRET_KEY ?? "");
+    const decoded = jwt.verify(token, config.SECRET_KEY || "");
 
     if (!decoded) {
       const response = createResponseMessage({
@@ -38,5 +38,4 @@ const jwtMiddleware = async (
     done();
   }
 };
-
 export default jwtMiddleware;

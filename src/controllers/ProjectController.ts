@@ -32,6 +32,7 @@ async function addProject(request: FastifyRequest, reply: FastifyReply) {
       link,
       account_id,
     });
+    console.log(addProject);
 
     const response = createResponseMessage({
       code: StatusCodeModel.SUCCESS.code,

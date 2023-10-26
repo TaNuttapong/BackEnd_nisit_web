@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, FastifyRequest } from "fastify";
 import accountController from "../controllers/AccountController";
 import createAccountSchema from "../schemas/account/AccountCreate";
 import listAccountSchema from "../schemas/account/AccountList";
@@ -12,6 +12,10 @@ import addController from "../controllers/ProjectController";
 import addProjectSchema from "../schemas/project/ProjectAdd";
 import NiSitControllers from "../controllers/NisitController";
 import ProjectControllers from "../controllers/ProjectController";
+import addNiSitSchema from "../schemas/nisit/NisitAdd";
+import server from "../server";
+import plugin from "../server/test";
+import pluginNiSit from "../server/test";
 
 async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.get(`${prefix}/account/list`, {
@@ -48,11 +52,11 @@ async function routes(fastify: FastifyInstance, prefix: string) {
     preHandler: jwtMiddleware,
     handler: ProjectControllers.addProject,
   });
-  fastify.post(`${prefix}/nisit/excel/add`, {
-    // schema: addProjectSchema,
-    preHandler: jwtMiddleware,
-    handler: NiSitControllers.addNiSitExcel,
-  });
+  fastify.post(
+    `${prefix}/nisit/excel/add`,
+    { preHandler: [] },
+    NiSitControllers.addNiSitExcel
+  );
 }
 
 export default routes;

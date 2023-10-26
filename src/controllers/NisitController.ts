@@ -10,6 +10,8 @@ import { AddNiSitRequest } from "../models/Request/NisitRequestModel";
 async function addNiSitExcel(request: FastifyRequest, reply: FastifyReply) {
   try {
     const dataExcel = await request.file();
+    console.log(dataExcel);
+
     if (!dataExcel) {
       const response = createResponseMessage({
         code: StatusCodeModel.FAILED.code,
@@ -18,7 +20,6 @@ async function addNiSitExcel(request: FastifyRequest, reply: FastifyReply) {
         description: NiSitDescription.ADD_NISIT_FAILED,
         err: "No file uploaded",
       });
-
       reply.status(400).send(response);
       return;
     }
@@ -28,7 +29,7 @@ async function addNiSitExcel(request: FastifyRequest, reply: FastifyReply) {
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
     const rows: AddNiSitRequest[] = xlsx.utils.sheet_to_json(sheet);
-    console.log(rows.length);
+    console.log(`Total rows in the Excel: ${rows.length}`);
 
     for (const row of rows) {
       await nisitServices.addNiSit(row);
@@ -56,7 +57,7 @@ async function addNiSitExcel(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
-async function streamToBuffer(stream: Readable): Promise<Buffer> {
+export async function streamToBuffer(stream: Readable): Promise<Buffer> {
   return new Promise<Buffer>((resolve, reject) => {
     const chunks: Buffer[] = [];
     stream.on("data", (chunk) => chunks.push(chunk));
