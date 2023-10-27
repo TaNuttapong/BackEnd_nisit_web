@@ -2,22 +2,14 @@ const addNiSitSchema = {
   tags: ["NiSit"],
   summary: "Add a new NiSit",
   description: "Add a new NiSit.",
+  consumes: ['multipart/form-data'],
   security: [{ bearerAuth: [] }],
   body: {
     type: "object",
+    required: ["field"],
     properties: {
-      student_id: { type: "string" },
-      name: { type: "string" },
-      class: { type: "string" },
+      // field: { isFile: true },
     },
-    examples: [
-      {
-        student_id: "6330250121",
-        name: "test testname",
-        class: "wasd",
-      },
-    ],
-    required: ["student_id", "name", "class"],
   },
   response: {
     201: {

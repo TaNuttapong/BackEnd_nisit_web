@@ -9,7 +9,9 @@ import { AddNiSitRequest } from "../models/Request/NisitRequestModel";
 
 async function addNiSitExcel(request: FastifyRequest, reply: FastifyReply) {
   try {
-    const dataExcel = await request.file();
+
+    const dataExcel = request.file();
+    console.log("dd");
     console.log(dataExcel);
 
     if (!dataExcel) {
