@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import accountController from "../controllers/AccountController";
 import createAccountSchema from "../schemas/account/AccountCreate";
 import listAccountSchema from "../schemas/account/AccountList";
@@ -8,9 +8,7 @@ import authController from "../controllers/Auth/AuthController";
 import LoginSchema from "../schemas/auth/Login";
 import LogoutSchema from "../schemas/auth/Logout";
 import addProjectSchema from "../schemas/project/ProjectAdd";
-import NiSitControllers, {
-  streamToBuffer,
-} from "../controllers/NisitController";
+import NiSitControllers from "../controllers/NisitController";
 import ProjectControllers from "../controllers/ProjectController";
 import addNiSitSchema from "../schemas/nisit/NisitAdd";
 import multer from "fastify-multer";
@@ -18,6 +16,16 @@ import * as fs from "fs";
 import pump from "pump";
 import * as xlsx from "xlsx";
 import { AddNiSitRequest } from "../models/Request/NisitRequestModel";
+import { Readable } from "stream";
+import { MultipartFile } from "@fastify/multipart";
+async function streamToBuffer(stream: Readable): Promise<Buffer> {
+  return new Promise<Buffer>((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    stream.on("data", (chunk) => chunks.push(chunk));
+    stream.on("end", () => resolve(Buffer.concat(chunks)));
+    stream.on("error", reject);
+  });
+}
 
 async function routes(fastify: FastifyInstance, prefix: string) {
   const upload = multer({ storage: multer.memoryStorage(), dest: "uploads/" });
@@ -58,14 +66,15 @@ async function routes(fastify: FastifyInstance, prefix: string) {
     });
 
     instance.post(`${prefix}/nisit/excel/add`, {
-      // schema: addNiSitSchema,
-      // preHandler: handleFileUpload,
-      // preHandler: upload.single("file"),
-      // handler: NiSitControllers.addNiSitExcel,
-      handler: async function (req, reply) {
+      handler: async function (req: FastifyRequest, reply: FastifyReply) {
         try {
-          const data = req.file;
-          const buffer = await streamToBuffer(data);
+          const dataExcel: MultipartFile = req.file as unknown as MultipartFile; // Type assertion to MultipartFile
+          if (!dataExcel) {
+            reply.code(400).send("No file uploaded");
+            return;
+          }
+
+          const buffer = await streamToBuffer(dataExcel.file);
           const workbook = xlsx.read(buffer);
           const sheetName = workbook.SheetNames[0];
           const sheet = workbook.Sheets[sheetName];
@@ -79,12 +88,11 @@ async function routes(fastify: FastifyInstance, prefix: string) {
         }
       },
     });
-  });
 
-  fastify.post(`${prefix}/auth/login`, {
-    schema: LoginSchema,
-    handler: authController.login,
+    fastify.post(`${prefix}/auth/login`, {
+      schema: LoginSchema,
+      handler: authController.login,
+    });
   });
 }
-
 export default routes;
