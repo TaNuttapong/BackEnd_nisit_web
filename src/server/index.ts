@@ -16,13 +16,7 @@ export default function createServer(): FastifyInstance {
     origin: true,
     methods: ["GET", "PUT", "POST", "DELETE"],
   });
-  app.register(fastifyMultipart, {
-    attachFieldsToBody: true,
-    // limits: {
-    //   fields: 1,
-    //   files: 1,
-    // },
-  });
+  app.register(fastifyMultipart);
   app.register(jwt, {
     secret: config.SECRET_KEY ?? "",
     sign: { algorithm: "HS512", expiresIn: config.EXPIRE },

@@ -1,72 +1,84 @@
 const addNiSitSchema = {
   tags: ["NiSit"],
-  summary: "Add a new NiSit",
-  description: "Add a new NiSit.",
-  consumes: ['multipart/form-data'],
+  summary: "Add a new NiSit with Excel",
+  description: "Add a new NiSit with Excel.",
+  consumes: ["multipart/form-data"],
   security: [{ bearerAuth: [] }],
-  body: {
-    type: "object",
-    required: ["field"],
-    properties: {
-      // field: { isFile: true },
-    },
-  },
-  response: {
-    201: {
-      description: "Add NiSit successfully",
-      properties: {
-        status: {
+  requestBody: {
+    content: {
+      "multipart/form-data": {
+        schema: {
           type: "object",
           properties: {
-            code: { type: "string" },
-            message: { type: "string" },
-            service: { type: "string" },
-            description: { type: "string" },
+            file: { type: "string", format: "binary" },
           },
         },
-        data: {
-          type: "object",
-          properties: {
-            id: { type: "number" },
-            project_name: { type: "string" },
-            description: { type: "string" },
-            link: { type: "string" },
-            image: { type: "string" },
-            start_date: { type: "string", format: "date-time" },
-            end_date: { type: "string", format: "date-time" },
-            account_id: { type: "number" },
-            createdAt: { type: "string", format: "date-time" },
-            updatedAt: { type: "string", format: "date-time" },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: "Add NiSit successfully",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "object",
+                properties: {
+                  code: { type: "string" },
+                  message: { type: "string" },
+                  service: { type: "string" },
+                  description: { type: "string" },
+                },
+              },
+              data: "boolean",
+            },
           },
         },
       },
     },
     403: {
-      description: "Failed to add Project",
-      properties: {
-        status: {
-          type: "object",
-          properties: {
-            code: { type: "string" },
-            message: { type: "string" },
-            service: { type: "string" },
-            description: { type: "string" },
-            error: { type: "string" },
+      description: "Failed to add NiSit",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "object",
+                properties: {
+                  code: { type: "string" },
+                  message: { type: "string" },
+                  service: { type: "string" },
+                  description: { type: "string" },
+                  error: { type: "string" },
+                },
+              },
+            },
           },
         },
       },
     },
     500: {
       description: "Internal Server Error",
-      properties: {
-        status: {
-          type: "object",
-          properties: {
-            code: { type: "string" },
-            message: { type: "string" },
-            service: { type: "string" },
-            description: { type: "string" },
-            error: { type: "string" },
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "object",
+                properties: {
+                  code: { type: "string" },
+                  message: { type: "string" },
+                  service: { type: "string" },
+                  description: { type: "string" },
+                  error: { type: "string" },
+                },
+              },
+            },
           },
         },
       },

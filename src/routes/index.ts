@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { FastifyInstance } from "fastify";
 import accountController from "../controllers/AccountController";
 import createAccountSchema from "../schemas/account/AccountCreate";
 import listAccountSchema from "../schemas/account/AccountList";
@@ -10,34 +10,17 @@ import LogoutSchema from "../schemas/auth/Logout";
 import addProjectSchema from "../schemas/project/ProjectAdd";
 import ProjectControllers from "../controllers/ProjectController";
 import addNiSitSchema from "../schemas/nisit/NisitAdd";
-import multer from "fastify-multer";
-import * as fs from "fs";
-import pump from "pump";
-import * as xlsx from "xlsx";
-import { AddNiSitRequest } from "../models/Request/NisitRequestModel";
-import { Readable } from "stream";
 import NiSitControllers from "../controllers/NisitController";
 
-async function streamToBuffer(stream: Readable): Promise<Buffer> {
-  return new Promise((resolve, reject) => {
-    const chunks: Buffer[] = [];
-    stream.on("data", (chunk) => chunks.push(chunk));
-    stream.on("end", () => resolve(Buffer.concat(chunks)));
-    stream.on("error", reject);
-  });
-}
 async function routes(fastify: FastifyInstance, prefix: string) {
-  const upload = multer({ storage: multer.memoryStorage(), dest: "uploads/" });
-
   fastify.register(async function (instance) {
-    instance.addHook("preHandler", async (request, reply) => {
+    instance.addHook("preHandler", async (req, reply) => {
       try {
-        await request.jwtVerify();
+        await req.jwtVerify();
       } catch (err) {
         reply.code(401).send({ error: "Unauthorized" });
       }
     });
-    instance.register(multer.contentParser);
 
     instance.get(`${prefix}/auth/logout`, {
       schema: LogoutSchema,
@@ -64,35 +47,10 @@ async function routes(fastify: FastifyInstance, prefix: string) {
       handler: ProjectControllers.addProject,
     });
 
-    instance.post(
-      `${prefix}/nisit/excel/add`,
-      // { preHandler: upload.single("file") },
-      async function uploadExcelFile(req, reply) {
-        try {
-          const dataExcel = await req.file();
-          console.log(dataExcel);
-          console.log(req.isMultipart());
-
-          if (!dataExcel) {
-            reply.code(400).send("No file uploaded.");
-            return;
-          }
-
-          const buffer = await streamToBuffer(dataExcel.file);
-          const workbook = xlsx.read(buffer, { type: "buffer" });
-          const sheetName = workbook.SheetNames[0];
-          const sheet = workbook.Sheets[sheetName];
-          const rows = xlsx.utils.sheet_to_json(sheet);
-
-          console.log(`Total rows in the Excel: ${rows.length}`);
-
-          reply.code(200).send("File uploaded and saved successfully");
-        } catch (err) {
-          console.error("Error:", err);
-          reply.code(500).send("Internal Server Error");
-        }
-      }
-    );
+    instance.post(`${prefix}/nisit/excel/add`, {
+      schema: addNiSitSchema,
+      handler: NiSitControllers.addNiSitExcel,
+    });
   });
 
   fastify.post(`${prefix}/auth/login`, {
