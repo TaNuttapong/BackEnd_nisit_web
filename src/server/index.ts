@@ -1,6 +1,6 @@
 import fastify, { FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
-import fastifyMultipart from '@fastify/multipart';
+import fastifyMultipart from "@fastify/multipart";
 import helmet from "@fastify/helmet";
 import jwt from "@fastify/jwt";
 import swagger from "@fastify/swagger";
@@ -18,10 +18,10 @@ export default function createServer(): FastifyInstance {
   });
   app.register(fastifyMultipart, {
     attachFieldsToBody: true,
-    limits: {
-      fields: 1,
-      files: 1,
-    }
+    // limits: {
+    //   fields: 1,
+    //   files: 1,
+    // },
   });
   app.register(jwt, {
     secret: config.SECRET_KEY ?? "",
