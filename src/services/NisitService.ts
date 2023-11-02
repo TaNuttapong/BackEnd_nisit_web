@@ -4,13 +4,13 @@ import prisma from "../prisma";
 async function addNiSit(payload: AddNiSitRequest) {
   const studentId = String(payload.student_id);
   const name = payload.name;
-  const classPayload = payload.class ?? "";
+  const classPayload = payload.classStudent ?? "";
 
   return await prisma.nisit.create({
     data: {
       student_id: studentId,
       name: name,
-      class: classPayload,
+      classStudent: classPayload,
     },
   });
 }

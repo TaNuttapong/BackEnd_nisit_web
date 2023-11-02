@@ -40,12 +40,12 @@ model Project {
 }
 
 model Nisit {
-  id         Int      @id @default(autoincrement())
-  student_id String
-  name       String   @db.VarChar(50)
-  class      String?  @db.VarChar(255)
-  createdAt  DateTime @default(now()) @db.Timestamp(6)
-  updatedAt  DateTime @updatedAt @db.Timestamp(6)
+  id           Int      @id @default(autoincrement())
+  student_id   String
+  name         String   @db.VarChar(50)
+  classStudent String?  @db.VarChar(255)
+  createdAt    DateTime @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime @updatedAt @db.Timestamp(6)
 }
 
 // model Nisit_Project {

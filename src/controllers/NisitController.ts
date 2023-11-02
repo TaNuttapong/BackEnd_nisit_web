@@ -55,9 +55,41 @@ async function addNiSitExcel(request: FastifyRequest, reply: FastifyReply) {
     reply.status(500).send(response);
   }
 }
+async function addNiSit(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const { name, classStudent, student_id } = request.body as AddNiSitRequest;
+
+    const addNisit = await nisitServices.addNiSit({
+      student_id,
+      name,
+      classStudent,
+    });
+    console.log(addNisit);
+
+    const response = createResponseMessage({
+      code: StatusCodeModel.SUCCESS.code,
+      message: StatusCodeModel.SUCCESS.message,
+      service: NiSitService.ADD_NISIT,
+      description: NiSitDescription.ADD_NISIT_SUCCESS,
+      data: addNiSit,
+    });
+
+    reply.status(201).send(response);
+  } catch (err: any) {
+    const response = createResponseMessage({
+      code: StatusCodeModel.FAILED.code,
+      message: StatusCodeModel.FAILED.message,
+      service: NiSitService.ADD_NISIT,
+      description: NiSitDescription.ADD_NISIT_FAILED,
+      err: err.message,
+    });
+    reply.status(500).send(response);
+  }
+}
 
 const NiSitControllers = {
   addNiSitExcel,
+  addNiSit,
 };
 
 export default NiSitControllers;

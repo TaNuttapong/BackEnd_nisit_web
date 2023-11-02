@@ -9,8 +9,9 @@ import LoginSchema from "../schemas/auth/Login";
 import LogoutSchema from "../schemas/auth/Logout";
 import addProjectSchema from "../schemas/project/ProjectAdd";
 import ProjectControllers from "../controllers/ProjectController";
-import addNiSitSchema from "../schemas/nisit/NisitAdd";
 import NiSitControllers from "../controllers/NisitController";
+import addNiSitExcelSchema from "../schemas/nisit/NisitExcelAdd";
+import addNiSitSchema from "../schemas/nisit/NisitAdd";
 
 async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.register(async function (instance) {
@@ -48,8 +49,12 @@ async function routes(fastify: FastifyInstance, prefix: string) {
     });
 
     instance.post(`${prefix}/nisit/excel/add`, {
-      schema: addNiSitSchema,
+      schema: addNiSitExcelSchema,
       handler: NiSitControllers.addNiSitExcel,
+    });
+    instance.post(`${prefix}/nisit/add`, {
+      schema: addNiSitSchema,
+      handler: NiSitControllers.addNiSit,
     });
   });
 
