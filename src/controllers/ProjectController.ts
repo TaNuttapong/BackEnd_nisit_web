@@ -7,7 +7,32 @@ import {
   ProjectDescription,
   ProjectService,
 } from "../constants/ProjectConstants";
+import ProjectServices from "../services/ProjectService";
 
+async function listProject(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const Project = await ProjectServices.listProject();
+
+    const response = createResponseMessage({
+      code: StatusCodeModel.SUCCESS.code,
+      message: StatusCodeModel.SUCCESS.message,
+      service: ProjectService.LIST_PROJECT,
+      description: ProjectDescription.LIST_PROJECT_SUCCESS,
+      data: Project,
+    });
+
+    reply.status(200).send(response);
+  } catch (err: any) {
+    const response = createResponseMessage({
+      code: StatusCodeModel.FAILED.code,
+      message: StatusCodeModel.FAILED.message,
+      service: ProjectService.LIST_PROJECT,
+      description: ProjectDescription.LIST_PROJECT_FAILED,
+      err: err.message,
+    });
+    reply.status(500).send(response);
+  }
+}
 async function addProject(request: FastifyRequest, reply: FastifyReply) {
   try {
     const {
@@ -57,6 +82,7 @@ async function addProject(request: FastifyRequest, reply: FastifyReply) {
 
 const ProjectControllers = {
   addProject,
+  listProject,
 };
 
 export default ProjectControllers;

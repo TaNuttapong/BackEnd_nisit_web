@@ -12,6 +12,7 @@ import ProjectControllers from "../controllers/ProjectController";
 import NiSitControllers from "../controllers/NisitController";
 import addNiSitExcelSchema from "../schemas/nisit/NisitExcelAdd";
 import addNiSitSchema from "../schemas/nisit/NisitAdd";
+import listProjectSchema from "../schemas/project/ProjectList";
 
 async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.register(async function (instance) {
@@ -46,6 +47,10 @@ async function routes(fastify: FastifyInstance, prefix: string) {
     instance.post(`${prefix}/project/add`, {
       schema: addProjectSchema,
       handler: ProjectControllers.addProject,
+    });
+    instance.get(`${prefix}/project/list`, {
+      schema: listProjectSchema,
+      handler: ProjectControllers.listProject,
     });
 
     instance.post(`${prefix}/nisit/excel/add`, {

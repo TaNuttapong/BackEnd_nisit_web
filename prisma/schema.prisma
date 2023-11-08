@@ -26,36 +26,34 @@ model Account {
 }
 
 model Project {
-  id           Int      @id @default(autoincrement())
-  project_name String   @db.VarChar(50)
-  description  String   @db.Text
-  image        String   @db.VarChar(255)
-  start_date   DateTime
-  end_date     DateTime
-  link         String   @db.VarChar(255)
-  account_id   Int
-  account      Account  @relation(fields: [account_id], references: [id])
-  createdAt    DateTime @default(now()) @db.Timestamp(6)
-  updatedAt    DateTime @updatedAt @db.Timestamp(6)
+  id            Int             @id @default(autoincrement())
+  project_name  String          @db.VarChar(50)
+  description   String          @db.Text
+  image         String          @db.VarChar(255)
+  start_date    DateTime
+  end_date      DateTime
+  link          String          @db.VarChar(255)
+  account_id    Int
+  account       Account         @relation(fields: [account_id], references: [id])
+  createdAt     DateTime        @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime        @updatedAt @db.Timestamp(6)
+
 }
 
 model Nisit {
-  id           Int      @id @default(autoincrement())
-  student_id   String
-  name         String   @db.VarChar(50)
-  classStudent String?  @db.VarChar(255)
-  createdAt    DateTime @default(now()) @db.Timestamp(6)
-  updatedAt    DateTime @updatedAt @db.Timestamp(6)
+  id            Int             @id @default(autoincrement())
+  student_id    String          @unique @db.VarChar(255)
+  project_id    String          @db.VarChar(255)
+  name          String          @db.VarChar(50)
+  classStudent  String?         @db.VarChar(255)
+  createdAt     DateTime        @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime        @updatedAt @db.Timestamp(6)
 }
 
-// model Nisit_Project {
-//   project_id  Int
-//   certificate String   @db.VarChar(255)
-//   project     Project  @relation(fields: [project_id], references: [id])
-//   createdAt   DateTime @default(now()) @db.Timestamp(6)
-//   updatedAt   DateTime @updatedAt @db.Timestamp(6)
-//   Nisit       Nisit?   @relation(fields: [nisitId], references: [id])
-//   nisitId     Int?
-
-//   @@unique([project_id])
-// }
+model Nisit_Project {
+  id          Int             @id @default(autoincrement())
+  student_number String       @db.VarChar(255)
+  certificate String?         @db.VarChar(255)
+  createdAt   DateTime        @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime        @updatedAt @db.Timestamp(6)
+}
