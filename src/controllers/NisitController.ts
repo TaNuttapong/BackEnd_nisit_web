@@ -8,9 +8,10 @@ import { AddNiSitRequest } from "../models/Request/NisitRequestModel";
 
 async function addNiSitExcel(request: FastifyRequest, reply: FastifyReply) {
   try {
+    const { project_id } = request.query as any;
     const data = await request.file();
     const file = data?.file;
-    
+
     if (!file) {
       const response = createResponseMessage({
         code: StatusCodeModel.FAILED.code,
@@ -31,7 +32,7 @@ async function addNiSitExcel(request: FastifyRequest, reply: FastifyReply) {
     const rows: AddNiSitRequest[] = xlsx.utils.sheet_to_json(sheet);
 
     for (const row of rows) {
-      await nisitServices.addNiSit(row);
+      await nisitServices.addNiSit(row, project_id);
     }
 
     const response = createResponseMessage({
@@ -57,13 +58,16 @@ async function addNiSitExcel(request: FastifyRequest, reply: FastifyReply) {
 }
 async function addNiSit(request: FastifyRequest, reply: FastifyReply) {
   try {
+    const { project_id } = request.query as any;
     const { name, classStudent, student_id } = request.body as AddNiSitRequest;
-
-    const addNisit = await nisitServices.addNiSit({
-      student_id,
-      name,
-      classStudent,
-    });
+    const addNisit = await nisitServices.addNiSit(
+      {
+        student_id,
+        name,
+        classStudent,
+      },
+      project_id
+    );
     console.log(addNisit);
 
     const response = createResponseMessage({

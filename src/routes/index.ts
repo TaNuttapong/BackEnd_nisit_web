@@ -48,10 +48,6 @@ async function routes(fastify: FastifyInstance, prefix: string) {
       schema: addProjectSchema,
       handler: ProjectControllers.addProject,
     });
-    instance.get(`${prefix}/project/list`, {
-      schema: listProjectSchema,
-      handler: ProjectControllers.listProject,
-    });
 
     instance.post(`${prefix}/nisit/excel/add`, {
       schema: addNiSitExcelSchema,
@@ -61,8 +57,15 @@ async function routes(fastify: FastifyInstance, prefix: string) {
       schema: addNiSitSchema,
       handler: NiSitControllers.addNiSit,
     });
+    instance.post(`${prefix}/nisit/uploadimg`, {
+      schema: addNiSitSchema,
+      handler: NiSitControllers.addNiSit,
+    });
   });
-
+  fastify.get(`${prefix}/project/list`, {
+    schema: listProjectSchema,
+    handler: ProjectControllers.listProject,
+  });
   fastify.post(`${prefix}/auth/login`, {
     schema: LoginSchema,
     handler: authController.login,

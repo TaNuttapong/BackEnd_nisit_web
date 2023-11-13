@@ -53,7 +53,7 @@ model Nisit {
 model Nisit_Project {
   id          Int             @id @default(autoincrement())
   student_number String       @db.VarChar(255)
-  certificate String?         @db.VarChar(255)
+  certificate String         @db.VarChar(255)
   createdAt   DateTime        @default(now()) @db.Timestamp(6)
   updatedAt   DateTime        @updatedAt @db.Timestamp(6)
 }

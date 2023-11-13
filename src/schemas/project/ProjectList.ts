@@ -2,7 +2,7 @@ const listProjectSchema = {
   tags: ["Project"],
   summary: "list Project",
   description: "list Project.",
-  security: [{ bearerAuth: [] }],
+  // security: [{ bearerAuth: [] }],
   response: {
     200: {
       description: "Project list successfully",

@@ -8,7 +8,6 @@ export interface AddProjectRequest {
   account_id: number;
 }
 
-
 export interface AddNiSitProjectRequest {
   certificate: string;
   description: string;
