@@ -13,6 +13,7 @@ import NiSitControllers from "../controllers/NisitController";
 import addNiSitExcelSchema from "../schemas/nisit/NisitExcelAdd";
 import addNiSitSchema from "../schemas/nisit/NisitAdd";
 import listProjectSchema from "../schemas/project/ProjectList";
+import UploadControllers from "../controllers/UploadController";
 
 async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.register(async function (instance) {
@@ -69,6 +70,9 @@ async function routes(fastify: FastifyInstance, prefix: string) {
   fastify.post(`${prefix}/auth/login`, {
     schema: LoginSchema,
     handler: authController.login,
+  });
+  fastify.post(`${prefix}/project/upload/image`, {
+    handler: UploadControllers.uploadImage,
   });
 }
 
